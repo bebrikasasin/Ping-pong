@@ -1,3 +1,9 @@
+from pygame import *
+window=display.set_mode((700,500))
+display.set_caption('Ping-pong')
+background=transform.scale(image.load('images.jpg'),(700,500))
+font1=font.Font(None,45)
+font2=font.Font(None,45)
 class GameSprite(sprite.Sprite):
  #конструктор класса
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
@@ -17,10 +23,46 @@ class GameSprite(sprite.Sprite):
 
 class Player(GameSprite):
    #метод для управления спрайтом стрелками клавиатуры
-    def update(self):
+    def update_l(self):
         keys = key.get_pressed()
-        if keys[K_LEFT] and self.rect.x > 5:
-            self.rect.x -= self.speed
-        if keys[K_RIGHT] and self.rect.x < win_width - 80:
-            self.rect.x += self.speed
-
+        if keys[K_w] and self.rect.y > 0:
+            self.rect.y -= self.speed
+        if keys[K_s] and self.rect.y < 450:
+            self.rect.y += self.speed
+    def update_r(self):
+        keys = key.get_pressed()
+        if keys[K_UP] and self.rect.y > 5:
+            self.rect.y -= self.speed
+        if keys[K_DOWN] and self.rect.y < 450:
+            self.rect.y += self.speed
+ball=GameSprite('png-clipart-football-football.png',10,10,20,100,5)
+rocket1=Player('d7300adb552de6eL.png',10,10,20,100,5)
+rocket2=Player('d7300adb552de6eLR.png',100,100,20,100,5)
+game=True
+finish = False
+while game:
+    if finish != True:
+        #if ball.rect.x<0:
+            
+        if ball.rect.y<0 or ball.rect.y >500:
+            speed_y  *= -1
+        if sprite.collide_rect(rocket1,ball):
+            speed_x *=-1
+        if sprite.collide_rect(rocket2,ball):
+            speed_x *=-1  
+        window.blit(background,(0,0))
+        rocket1.update_l()
+        rocket2.update_r()
+        rocket1.reset()
+        rocket2.reset()
+        ball.reset()
+        
+    for e in event.get():
+        if e.type==QUIT:
+            game=False
+           
+                
+                    
+    display.update()
+    time.delay(10)
+    
