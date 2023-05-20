@@ -1,11 +1,12 @@
 from pygame import *
-font.init 
+font.init()
 window=display.set_mode((700,500))
 display.set_caption('Ping-pong')
-background=transform.scale(image.load('images.jpg'),(700,500))
+background=transform.scale(image.load('12.jpg'),(700,500))
 font1=font.Font(None,45)
 font2=font.Font(None,45)
-win=font1.render('YOU LOSE',True,255,215,0)
+win=font1.render('Player1 LOSE',True,(255,215,0))
+winn=font2.render('Player2 LOSE',True,(255,215,0))
 class GameSprite(sprite.Sprite):
  #конструктор класса
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
@@ -37,18 +38,29 @@ class Player(GameSprite):
             self.rect.y -= self.speed
         if keys[K_DOWN] and self.rect.y < 450:
             self.rect.y += self.speed
-ball=GameSprite('png-clipart-football-football.png',10,10,20,100,5)
-rocket1=Player('d7300adb552de6eL.png',10,10,20,100,5)
-rocket2=Player('d7300adb552de6eLR.png',100,100,20,100,5)
+ball=GameSprite('25.png',100,10,50,50,5)
+rocket1=Player('24.png',10,10,20,100,5)
+rocket2=Player('24.png',650,100,20,100,5)
 
+speed_x=3
+speed_y=3
 game=True
 finish = False
 while game:
     if finish != True:
+        window.blit(background,(0,0))
+        rocket1.update_l()
+        rocket2.update_r()
+        rocket1.reset()
+        rocket2.reset()
+        ball.reset()
         ball.rect.x+=speed_x
         ball.rect.y+=speed_y
         if ball.rect.x<0:
             window.blit(win,(200,200))
+            finish=True
+        if ball.rect.x>700:
+            window.blit(winn,(200,200))
             finish=True
         if ball.rect.y<0 or ball.rect.y >500:
             speed_y  *= -1
@@ -56,12 +68,9 @@ while game:
             speed_x *=-1
         if sprite.collide_rect(rocket2,ball):
             speed_x *=-1  
-        window.blit(background,(0,0))
-        rocket1.update_l()
-        rocket2.update_r()
-        rocket1.reset()
-        rocket2.reset()
-        ball.reset()
+        
+            
+        
         
     for e in event.get():
         if e.type==QUIT:
