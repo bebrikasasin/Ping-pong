@@ -1,9 +1,11 @@
 from pygame import *
+font.init 
 window=display.set_mode((700,500))
 display.set_caption('Ping-pong')
 background=transform.scale(image.load('images.jpg'),(700,500))
 font1=font.Font(None,45)
 font2=font.Font(None,45)
+win=font1.render('YOU LOSE',True,255,215,0)
 class GameSprite(sprite.Sprite):
  #конструктор класса
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
@@ -38,12 +40,16 @@ class Player(GameSprite):
 ball=GameSprite('png-clipart-football-football.png',10,10,20,100,5)
 rocket1=Player('d7300adb552de6eL.png',10,10,20,100,5)
 rocket2=Player('d7300adb552de6eLR.png',100,100,20,100,5)
+
 game=True
 finish = False
 while game:
     if finish != True:
-        #if ball.rect.x<0:
-            
+        ball.rect.x+=speed_x
+        ball.rect.y+=speed_y
+        if ball.rect.x<0:
+            window.blit(win,(200,200))
+            finish=True
         if ball.rect.y<0 or ball.rect.y >500:
             speed_y  *= -1
         if sprite.collide_rect(rocket1,ball):
